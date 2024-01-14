@@ -7,11 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Interface\" />
-    <Folder Include="Reposatory\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\mvcClinicRegistrationManagementSystem.DAL\mvcClinicRegistrationManagementSystem.DAL.csproj" />
   </ItemGroup>
 
