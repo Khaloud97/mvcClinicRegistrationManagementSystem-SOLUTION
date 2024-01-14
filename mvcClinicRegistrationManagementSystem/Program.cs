@@ -1,3 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using mvcClinicRegistrationManagementSystem.BLL.Interface;
+using mvcClinicRegistrationManagementSystem.BLL.Reposatory;
+using mvcClinicRegistrationManagementSystem.DAL.Context;
+using mvcClinicRegistrationManagementSystem.DAL.Model;
+
 namespace mvcClinicRegistrationManagementSystem
 {
     public class Program
@@ -8,6 +14,15 @@ namespace mvcClinicRegistrationManagementSystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<ApplicationDbContext>(
+            options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+            );
+
+            builder.Services.AddScoped<IAppointmentReposatory, AppointmentReposatory>();
+            builder.Services.AddScoped<IDoctorReposatory, DoctorReposatory>();
+            builder.Services.AddScoped<IPatientReposatory, PatientReposatory>();
+            builder.Services.AddScoped<ISpecializationReposatory, SpecializationReposatory>();
 
             var app = builder.Build();
 
