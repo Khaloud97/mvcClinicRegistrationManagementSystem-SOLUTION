@@ -18,8 +18,4 @@
     <ProjectReference Include="..\mvcClinicRegistrationManagementSystem.BLL\mvcClinicRegistrationManagementSystem.BLL.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\NewFolder\" />
-  </ItemGroup>
-
 </Project>

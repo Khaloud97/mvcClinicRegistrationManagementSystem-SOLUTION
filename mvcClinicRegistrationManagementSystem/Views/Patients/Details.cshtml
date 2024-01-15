@@ -1,0 +1,22 @@
+﻿@model Patient
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<style>
+    body {
+        background: #EEF5FF;
+       
+    }
+
+</style>
+
+<h2 >Patient Details:</h2>
+<partial name="PartialView/DetailDeletePartial" />
+
+
+<a asp-action="Update" asp-route-id="@Model.PatientsID" class="btn btn-warning"> Update </a> ||
+
+<a asp-action="Index" class="btn btn-light">Back </a>
+
+
+

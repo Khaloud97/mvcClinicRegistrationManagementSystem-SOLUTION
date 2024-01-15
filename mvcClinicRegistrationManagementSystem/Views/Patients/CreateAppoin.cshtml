@@ -1,0 +1,40 @@
+﻿﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<style>
+    body {
+        background: #EEF5FF;
+        text-align: center;
+    }
+
+</style>
+@model Appointment
+
+
+<h3>Register Patient with Specializatoin: </h3>
+<form asp-action="CreateAppoin">
+
+
+
+    <label class="form-Label">Specializatoin</label>
+    <input class="form-control" />
+    <span class="text-danger"></span>
+
+    <label class="form-label">Doctors</label>
+    <select class="form-control" asp-for="DoctorId" asp-items="@ViewBag.doctors">
+        <options value="@null">--Select Doctors--</options>
+
+    </select>
+
+    <label asp-for=Date class="form-Label">Date</label>
+    <input asp-for=Date class="form-control" />
+    <span asp-validation-for="Date" class="text-danger"></span>
+
+
+  
+    <input type="submit" class="btn btn-primary" />
+    @*<a asp-action="CreateAppoin" class="btn btn-warning"> Submit</a>*@ ||
+    <a asp-action="Index" class="btn btn-dark"> Back to List</a>
+</form>

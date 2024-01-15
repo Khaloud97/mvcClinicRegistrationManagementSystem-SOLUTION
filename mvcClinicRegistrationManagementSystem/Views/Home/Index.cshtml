@@ -2,7 +2,37 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to the Clinic Registration Management System</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <style>
+        body {
+        background: #EEF5FF;
+        text-align: center;
+        }
+
+        .circle-button {
+            display: inline-block;
+            width: 100px;
+            height: 100px;
+            background-color: #3498db; /* Adjust the background color */
+            border-radius: 50%;
+            margin: 20px;
+            overflow: hidden;
+        }
+
+            .circle-button img {
+                width: 100%;
+                height: auto;
+                border-radius: 50%;
+            }
+    </style>
+
+<h1>Welcome to the Clinic Registration Management System</h1>
+
+    <div class="circle-button" onclick="location.href='/Admin'">
+    <img src="~/img/admin.png" alt="Admin">
+    </div>
+
+    <div class="circle-button" onclick="location.href='/Patients'">
+	<img src="~/img/pations.png" alt="Patients">
+    </div>
+
+

@@ -1,0 +1,52 @@
+﻿@model List<Patient>
+@{
+    ViewData["Title"] = "Patient List";
+}
+<style>
+    body {
+        background: #EEF5FF;
+        text-align: center;
+    }
+
+</style>
+<h2>Patient List</h2>
+<a asp-action="Create" class="btn btn-primary">Create New Patient</a>
+
+
+@if (Model.Count > 0)
+{
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Patient's Name</th>
+                <th>Contact Details</th>
+                
+              
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in Model)
+            {
+                <tr>
+                    <td>@patient.PatientsName</td>
+                    <td>@patient.ContactDetails</td>
+                    
+                    <td>
+                        <partial name="PatientButtonPartial" model="@patient.PatientsID" />
+                    </td>
+                    
+                </tr>
+               
+
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="card bg-dark text-light">
+        <h2>No Patients Available</h2>
+    </div>
+}
+
+

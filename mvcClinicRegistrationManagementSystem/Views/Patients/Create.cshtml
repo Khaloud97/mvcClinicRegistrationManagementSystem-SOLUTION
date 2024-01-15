@@ -1,0 +1,77 @@
+﻿@model Patient
+<style>
+    body {
+        background: #EEF5FF;
+        text-align: center;
+    }
+
+</style>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+<h3>Register Patient</h3>
+<form asp-action="Create">
+    
+    <label asp-for="PatientsName" class="form-Label"></label>
+    <input asp-for="PatientsName" class="form-control" />
+    <span asp-validation-for="PatientsName" class="text-danger"></span>
+
+
+    <label asp-for="ContactDetails" class="form-Label"></label>
+    <input asp-for="ContactDetails" class="form-control" />
+    <span asp-validation-for="ContactDetails" class="text-danger"></span>
+
+
+
+
+    <a asp-action="CreateAppoin"  class="btn btn-warning"> Add Specializatoin</a> ||
+    <a asp-action="Index" class="btn btn-dark"> Back to List</a>
+
+</form>
+
+
+
+@*
+@{
+    var specializations = new SelectList(ViewBag.Specializations, "Id", "Name");
+}
+@*
+<h2> Add New Patient </h2>
+
+<form asp-action="Create">*@
+    @* <div asp-validation-summary="All"></div> *@
+
+    @* <partial name="PartialView/CreateUpdatePartial" /> *@
+
+    @*   <label asp-for="PatientsName" class="form-Label"></label>
+    <input asp-for="PatientsName" class="form-control" />
+    <span asp-validation-for="PatientsName" class="text-danger"></span>
+
+
+    <label asp-for="ContactDetails" class="form-Label"></label>
+    <input asp-for="ContactDetails" class="form-control" />
+    <span asp-validation-for="ContactDetails" class="text-danger"></span>
+
+    <label asp-for="Appointment" class="form-label"></label>
+    <select class="form-control" asp-for="Appointment" asp-items="@specializations">
+        <options value="@null">--Select specializations--</options>
+
+    </select>
+
+    <input type="submit" class="btn btn-primary" />
+    | <a asp-action="Index" class="btn btn-dark"> Back to List</a>
+
+</form>
+
+@section ClientSideValidation
+    {
+    <partial name="_ValidationScriptsPartial" />
+}*@
+
+
+    ﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
