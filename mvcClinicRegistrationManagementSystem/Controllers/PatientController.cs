@@ -51,6 +51,7 @@ namespace mvcClinicRegistrationManagementSystem.PL.Controllers
             return View(patient);
         }
         //=========================================
+        //add (create /register ) Patients:
         public IActionResult Create()
         {
             return View();
@@ -69,6 +70,11 @@ namespace mvcClinicRegistrationManagementSystem.PL.Controllers
         {
             List<Doctor> doctors = _doctorRepo.GetAll().ToList();
             ViewBag.DoctorList = new SelectList(doctors, "DoctorId", "Name");
+
+            List<Specialization> specializations = _specializationRepo.GetAll().ToList();
+            ViewBag.Special = new SelectList(specializations, "SpecializationsID", "SpecializationName");
+
+            
             return View();
         }
         [HttpPost]
@@ -83,26 +89,105 @@ namespace mvcClinicRegistrationManagementSystem.PL.Controllers
         }
 
 
+        //=====================================================
+        //Update Patients:
+        public IActionResult Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var patient = _patientRepo.Get(id.Value);
+
+            if (patient == null)
+            {
+                return NotFound();
+            }
+
+            var patientViewModel = new Patient
+            {
+                PatientsID = patient.PatientsID,
+                PatientsName = patient.PatientsName,
+                ContactDetails = patient.ContactDetails
+            };
+
+            return View(patientViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Update(Patient patientViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var patient = _patientRepo.Get(patientViewModel.PatientsID);
+
+                if (patient != null)
+                {
+                    // Update patient information based on the ViewModel
+                    patient.PatientsName = patientViewModel.PatientsName;
+                    patient.ContactDetails = patientViewModel.ContactDetails;
+
+                    _patientRepo.Update(patient);
+
+                    return RedirectToAction("Details", new { id = patient.PatientsID });
+                }
+            }
+
+            return View(patientViewModel);
+        }
+
 
         //==========================================
-        //Patients/Register:
-        //public IActionResult Create()
-        //{
-        //    return View();
-        //}
+        // UpdateAppointment of Patients: 
+        public IActionResult UpdateAppointment(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
-        //[HttpPost]
-        //public IActionResult Create(Patient patient)
-        //{
+            var appointment = _appointmentRepo.Get(id.Value);
 
-        //    if (ModelState.IsValid)
-        //    {
-        //        _patientRepo.Create(patient);
-        //        TempData["success"] = "Patient Details Added Successfully";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View();
-        //}
+            if (appointment == null)
+            {
+                return NotFound();
+            }
+
+            var appointmentViewModel = new Appointment
+            {
+                AppoID = appointment.AppoID,
+                Date = appointment.Date,
+                Time = appointment.Time,
+                DoctorId = appointment.DoctorId
+            };
+
+           
+            return View(appointmentViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult UpdateAppointment(Appointment appointmentViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var appointment = _appointmentRepo.Get(appointmentViewModel.AppoID);
+
+                if (appointment != null)
+                {
+                    // Update appointment information based on the ViewModel
+                    appointment.Date = appointmentViewModel.Date;
+                    appointment.Time = appointmentViewModel.Time;
+                    appointment.DoctorId = appointmentViewModel.DoctorId;
+
+                    _appointmentRepo.Update(appointment);
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return View(appointmentViewModel);
+        }
 
 
         //==========================================
@@ -149,7 +234,25 @@ namespace mvcClinicRegistrationManagementSystem.PL.Controllers
         //    return View();
         //}
     }
+    //==========================================
+    //Patients/Register:
+    //public IActionResult Create()
+    //{
+    //    return View();
+    //}
 
+    //[HttpPost]
+    //public IActionResult Create(Patient patient)
+    //{
+
+    //    if (ModelState.IsValid)
+    //    {
+    //        _patientRepo.Create(patient);
+    //        TempData["success"] = "Patient Details Added Successfully";
+    //        return RedirectToAction("Index");
+    //    }
+    //    return View();
+    //}
     //public class PatientController : Controller
     //{
     //    private readonly IAppointmentReposatory _appointmentRepo;
