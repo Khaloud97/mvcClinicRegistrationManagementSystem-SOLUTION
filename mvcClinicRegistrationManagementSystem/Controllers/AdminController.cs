@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using mvcClinicRegistrationManagementSystem.BLL.Interface;
 using mvcClinicRegistrationManagementSystem.DAL.Context;
 using mvcClinicRegistrationManagementSystem.DAL.Model;
@@ -7,90 +8,91 @@ namespace mvcClinicRegistrationManagementSystem.PL.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly ApplicationDbContext _context;
+      
+
+       
         private readonly IAppointmentReposatory _appointmentRepo;
         private readonly IPatientReposatory _patientRepo;
         private readonly ISpecializationReposatory _specializationRepo;
         private readonly IDoctorReposatory _doctorRepo;
 
+        private readonly ApplicationDbContext _context;
         public AdminController(ApplicationDbContext context)
         {
             _context = context;
+           
         }
 
-        public IActionResult AppointmentOverview()
+
+        //This is the index view :
+        public IActionResult Index()
         {
             var appointments = _context.Appointment
                 .Include(a => a.Patient)
                 .Include(a => a.Specialization)
+                .Include(a => a.Doctor)
                 .ToList();
 
             return View(appointments);
         }
 
-        public IActionResult ManageAppointment(int appointmentId)
-        {
-            var appointment = _context.Appointment
-                .Include(a => a.Patient)
-                .Include(a => a.Specialization)
-                .FirstOrDefault(a => a.AppointmentID == appointmentId);
 
-            if (appointment == null)
+        //ApproveAppointment sets the status of the appointment to "Approved":
+
+            [HttpPost]
+            public IActionResult ApproveAppointment(int AppoID)
             {
-                return NotFound(); // Handle case where appointment is not found
+                var appointment = _context.Appointment.Find(AppoID);
+
+                if (appointment != null)
+                {
+                    appointment.Status = "Approved";
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
-            return View(appointment);
-        }
+
+
+        //RescheduleAppointment updates the date and time of the appointment with the provided values:
+
+
 
         [HttpPost]
-        public IActionResult ApproveAppointment(int appointmentId)
+        public IActionResult RescheduleAppointment(int AppoID, DateTime newDateTime)
         {
-            var appointment = _context.Appointment.Find(appointmentId);
+            var appointment = _context.Appointment.Find(AppoID);
 
-            if (appointment == null)
+            if (appointment != null)
             {
-                return NotFound(); 
+                appointment.Date = newDateTime.Date;
+                appointment.Time = newDateTime.ToString("HH:mm");
+
+                _context.SaveChanges();
             }
 
-            appointment.Status = "Approved"; 
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(AppointmentOverview));
+            return RedirectToAction(nameof(Index));
         }
 
+
+
+
+        //CancelAppointment sets the status of the appointment to "Canceled":
         [HttpPost]
-        public IActionResult RescheduleAppointment(int appointmentId, DateTime newDateTime)
-        {
-            var appointment = _context.Appointment.Find(appointmentId);
-
-            if (appointment == null)
+            public IActionResult CancelAppointment(int AppoID)
             {
-                return NotFound(); 
+                var appointment = _context.Appointment.Find(AppoID);
+
+                if (appointment != null)
+                {
+                    appointment.Status = "Canceled";
+                    _context.SaveChanges();
+                }
+
+                return RedirectToAction(nameof(Index));
             }
 
-            appointment.Date = newDateTime.Date;
-            appointment.Time = newDateTime.TimeOfDay;
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(AppointmentOverview));
-        }
-
-        [HttpPost]
-        public IActionResult CancelAppointment(int appointmentId)
-        {
-            var appointment = _context.Appointment.Find(appointmentId);
-
-            if (appointment == null)
-            {
-                return NotFound(); // Handle case where appointment is not found
-            }
-
-            appointment.Status = "Canceled"; // Update status as needed
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(AppointmentOverview));
-        }
     }
 }
 //    public class AdminController : Controller
